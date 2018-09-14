@@ -17,7 +17,7 @@ cache:
 before_script:
   - git config --local user.name "chenyueban"
   - git config --local user.email 269380014@163.com
-  - sed -i'' "s~git@github.com:chenyueban/notes.git~https://${REPO_TOKEN}:x-oauth-basic@github.com/chenyueban/notes.git~"
+  - sed -i'' "s~git@github.com:chenyueban/notes.git~https://${REPO_TOKEN}:x-oauth-basic@github.com/chenyueban/notes.git~" deploy.sh
 
 script:
   - ./deploy.sh
