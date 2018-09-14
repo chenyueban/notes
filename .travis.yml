@@ -2,29 +2,15 @@ language: node_js
 sudo: required
 node_js:
   - "lts/*"
-branches:
-  only:
-  - master
-env:
-  global:
-    secure: nA+nuA6f41tkIQPM20+fPRDJgbsZElZZbahwYw10t8roZ7vafY0z5pcf25CLpjJgySzVv3WtvKfKc7tE1Ah0w4XCCm0sm6bQdrr3lx3Ksc76lNPeYdrnS/E/RrrDUjwkSfTlYCVs2i874kUPaMOEqEFZFEzWo6EK7Ib33pJKdfBYIW4R2A47nPjqB1GS/oeAIFXTscUfK4+Fkxk69PQbPv4W3rGjkpu6bJrunGAe0au3DreInwk4a0qsw3wGePTcuJXAA6izb2JHhVZCAJ4Bjme5JRytzyhKAHMCNUymQ1OOO1s3nxQ+bURqUH+VGN/ErXpJ4tXAEvUcZImTy2sqazs/7I4TwwvxEJhb5fX6W5MfsES+888/T5pp8aXtS8K6ayCxYUUOgphwPBhLx9q2d12Bq71bdeyPM2JDvKAlMycaG6oEXviA/UPtC+C2iMgX/AIdr1D7rfUFzg0DdE/T0W+ExrAWvOYWAwyNJlb6OfHec7qLgBxhtizynk13uRlYU2TgG8prY1EdYp42YH6WQvQLhhSrBT149OHtKwgIErXiEo6775+/8G5AXCq04msgjeqhJhzLLah8HuyAIrU5J+MrkwziIcfUZN2LsC6QnbqimCWuKDhhJOQ95VAZ4ODrnA2hCFyD8Wa7ewFkJuS3QrUBx7zSjSkDbn2r4vjE8lk=
-
-cache:
-  directories:
-  - node_modules
-  yarn: true
-
-before_script:
-  - git config --local user.name "chenyueban"
-  - git config --local user.email 269380014@163.com
-  - sed -i'' "s~git@github.com:chenyueban/notes.git~https://${REPO_TOKEN}:x-oauth-basic@github.com/chenyueban/notes.git~" deploy.sh
-
-script:
-  - ./deploy.sh
-
-before_install:
-  - export TZ='Asia/Shanghai'
-  - chmod +x deploy.sh
 
 install:
-  - yarn
+  - npm install -g vuepress
+script:
+  - vuepress build && cd .vuepress/dist
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $REPO_TOKEN
+  on:
+    branch: master
+  local-dir: .vuepress/dist
