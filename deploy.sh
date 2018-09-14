@@ -13,9 +13,6 @@ git init
 git add -A
 git commit -m 'deploy'
 
-git config --local user.name chenyueban
-git config --local user.email 269380014@163.com
-
 # 如果发布到 https://<USERNAME>.github.io/<REPO>
 git push -f git@github.com:chenyueban/notes.git master:gh-pages
 
