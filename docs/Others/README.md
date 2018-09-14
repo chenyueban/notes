@@ -137,7 +137,7 @@ deploy:
   github-token: $GITHUB_TOKEN
   on:
     branch: master
-  local-dir: .vuepress/dist
+  local-dir: docs/.vuepress/dist
 ```
 
 最后 push 代码到 github, travis 就会检测到 push 请求，实现自动部署到 `gh-pages` 分支

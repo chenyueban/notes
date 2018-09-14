@@ -5,11 +5,11 @@ node_js:
 install:
   - npm install -g vuepress
 script:
-  - npm run build && cd docs/.vuepress/dist
+  - vuepress build docs && cd docs/.vuepress/dist
 deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   on:
     branch: master
-  local-dir: .vuepress/dist
+  local-dir: docs/.vuepress/dist
