@@ -4,14 +4,12 @@
   "main": "index.js",
   "scripts": {
     "start": "vuepress dev docs",
-    "build": "vuepress build docs",
-    "deploy:build": "yarn run build && gh-pages -d docs/.vuepress/dist"
+    "build": "vuepress build docs"
   },
   "repository": "https://github.com/chenyueban/front-end-notes.git",
   "author": "chenyueban <269380014@qq.com>",
   "license": "MIT",
   "devDependencies": {
-    "gh-pages": "^1.2.0",
     "vuepress": "^0.12.0"
   }
 }
