@@ -2,15 +2,14 @@ language: node_js
 sudo: required
 node_js:
   - "lts/*"
-
 install:
   - npm install -g vuepress
 script:
-  - vuepress build && cd .vuepress/dist
+  - npm run build && cd .vuepress/dist
 deploy:
   provider: pages
   skip-cleanup: true
-  github-token: $REPO_TOKEN
+  github-token: $GITHUB_TOKEN
   on:
     branch: master
   local-dir: .vuepress/dist
