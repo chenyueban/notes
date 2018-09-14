@@ -105,3 +105,39 @@ locals.getAll()
 ```javascript
 locals.remove('key1', 'key2')
 ```
+
+## Vuepress + Travis 实现自动部署踩坑
+
+`vuepress` 官方推荐的创建一个 `deploy.sh` 来实现部署，此操作在集成 `travis` 时完全可以省略(别问我为什么知道)
+
+### 生成 Personal access tokens
+- 登录 github,点击右上角头像
+- Settings / Developer settings / Personal access tokens
+- Generate new token (全选)
+
+### Environment Variables 设置 token
+- 进入要设置的项目
+- More options / Settings
+- Environment Variables 内新添 `GITHUB_TOKEN` (value 为上一步 github 生成的 token)
+
+### .travis.yml
+- 项目根目录新建 `.travis.yml`
+```
+language: node_js
+sudo: required
+node_js:
+  - "lts/*"
+install:
+  - npm install -g vuepress
+script:
+  - vuepress build docs && cd docs/.vuepress/dist
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  on:
+    branch: master
+  local-dir: .vuepress/dist
+```
+
+最后 push 代码到 github, travis 就会检测到 push 请求，实现自动部署到 `gh-pages` 分支

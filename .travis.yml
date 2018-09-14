@@ -5,7 +5,7 @@ node_js:
 install:
   - npm install -g vuepress
 script:
-  - npm run build && cd .vuepress/dist
+  - npm run build && cd docs/.vuepress/dist
 deploy:
   provider: pages
   skip-cleanup: true
