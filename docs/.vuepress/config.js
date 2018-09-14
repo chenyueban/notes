@@ -1,10 +1,10 @@
 module.exports = {
   base: '/notes',
   title: 'Notes',
-  description: '相比博客来讲，文档式的记录模式可能更适合我吧',
+  description: '好记性不如烂笔头',
   themeConfig: {
     sidebarDepth: 2,
     lastUpdated: 'Last Updated',
-    sidebar: ['/CSS/', '/JS/', '/React/', '/Others/']
+    sidebar: ['/CSS/', '/JS/', '/React/', '/Webpack/', '/Others/']
   }
 }
