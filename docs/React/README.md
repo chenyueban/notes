@@ -1,10 +1,5 @@
 # React
 
-## React 最佳实践
-*强烈推荐阅读*
-
-=> [React 最佳实践](https://github.com/camsong/blog/issues/6)
-
 ## setState
 ### 函数式用法
 因为 `setState` 是异步的，所以下方写法会出问题

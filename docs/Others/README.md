@@ -1,48 +1,5 @@
 # Others
 
-## ESlint (Standard规范)
-全局安装 ESLint 你可以使用 npm：
-```
-npm install -g eslint
-```
-紧接着你应该设置一个配置文件：
-```
-eslint --init
-```
-注意 使用如下配置（使用 Standard 规范）
-```
-How would you like to configure ESLint? Use a popular style guide
-Which style guide do you want to follow? Standard
-Do you use React? Yes
-What format do you want your config file to be in? JSON
-```
-安装react插件
-```
-npm install eslint-plugin-react eslint-plugin-jsx-a11y --dev
-```
-.eslintrc.json 文件修改如下配置
-```json
-{
-  "extends": "standard",
-  "plugins": ["react"],
-  "rules": {
-    "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
-  }
-}
-```
-然后全局安装standard
-```
-npm install -g standard
-```
-之后就可以在需要自动规范代码的目录执行
-```
-standard --fix
-```
-[Standard 中文文档](http://hongfanqie.github.io/standardjs/index.html)
-
-[eslint 文档](http://eslint.cn/docs/user-guide/getting-started)
-
 ## localStorage控制
 *思想： 每个组件只使用一个hash储存当前组件的所有 "缓存" 状态,推荐使用组件名作为 key*
 
