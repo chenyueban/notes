@@ -417,6 +417,51 @@ class App extends React.Component {
 
 更多 `propType` 内容请看 => [文档](https://github.com/facebook/prop-types)
 
+### 使用 Get/Set 访问器属性来数据处理
+
+```javascript
+class FullName extends React.PureComponent {
+  state = {
+    firstName: 'li',
+    lastName: 'lei',
+  }
+
+  get fullName() {
+    const { firstName, lastName } = this.state;
+    return `${firstName} ${lastName}`;
+  }
+
+  render() {
+    return (
+      <div>{ this.fullName }</div>
+    );
+  }
+}
+```
+另外为了性能考虑，不要在render方法中进行数据处理、state/props的保存。
+```javascript
+// bad
+render () {
+  const name = `Mrs. ${this.props.name}`;
+  return <div>{name}</div>;
+}
+ 
+// good
+render () {
+  return <div>{`Mrs. ${this.props.name}`}</div>;
+}
+
+// best
+get fancyName () {
+  return `Mrs. ${this.props.name}`;
+}
+
+render () {
+  return <div>{this.fancyName}</div>;
+}
+```
+推荐阅读 [[译注]React最佳实践](https://fed.renren.com/2017/02/28/react-patterns/)
+
 #### React Docgen
 如果你的代码写的足够规范，且 prop 类型的名称和类型都很清晰，那么我们可以自动生成文档。
 
