@@ -303,4 +303,193 @@ React在每次render都会调用effects，我们还可以通过定义返回函�
 
 [[译] 理解 React Hooks](https://juejin.im/post/5be98a87f265da616e4bf8a4)
 
+### 状态
+
+#### setState
+> 应该总是将 setState 方法当作异步的
+
+```javascript
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      click: false,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({
+      click: true,
+    });
+    console.log(this.state.click); // false
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>Click me!</button>
+    );
+  }
+}
+```
+以上述代码段为例，控制台上将会输出 false。
+> 发生这种情况的原因在于 React 知道如何优化事件处理器内部的状态更新，并进行批处理，以获得更好的性能。
+```javascript
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      click: false,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({
+      click: true,
+    }, () => {
+      console.log(this.state.click); // true
+    });
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>Click me!</button>
+    );
+  }
+}
+```
+我们将代码稍微修改一下， 将 `console` 写入 `setState` 的第二个函数参数内，React 会帮我们在 `setState` 完成后触发函数。
+
+#### prop 类型
+> 我们的目的是开发真正可复用的组件，为了实现这一目的，需要尽可能清晰地定义组件接口。
+> 
+> 如果希望整个应用可以复用组件，关键要确保清晰地定义组件及其参数，以便能够直观使用。
+> 
+> React 提供了一个可以非常简单地表达组件接口的强大工具，只要提供组件期望接收的 prop 名称与对应的验证规则即可。
+> 
+> 与属性类型相关的规则也包含该属性为必选还是可选，还提供了用于编写自定义验证函数的选项。
+> 
+> 查看以下简单示例:
+> ```javascript
+> const Button = ({ text }) => <button>{text}</button>
+> Button.propTypes = {
+>  text: React.PropTypes.string,
+> }
+> ```
+> 以上代码段创建了一个无状态函数式组件，以接收一个类型为字符串的文本prop。
+> 
+> 然而，有时仅添加属性还不够，因为这无法告知我们没有该属性时组件能否正常工作。
+> 
+> 例如，没有文本的情况下，按钮组件无法正常操作，解决方法就是将该 prop 标记为必需:
+> ```javascript
+> Button.propTypes = {
+>   text: React.PropTypes.string.isRequired,
+> }
+> ```
+> 如果某个开发人员在另一个组件中使用了按钮组件，却没有设置文本属性，那浏览器控制台就会给出以下警告:
+>```
+> Failed prop type: Required prop `text` was not specified in `Button`.
+> ```
+> 需要强调的是，这种警告只会在开发模式下出现。生产版本的 React 出于性能原因禁用了 propTypes 验证。
+
+另外使用 class 组件时可以有更优雅的写法
+```javascript
+import PropTypes from 'prop-types';
+
+class App extends React.Component {
+
+  static propTypes = {
+    test: PropTypes.string,
+  }
+
+  render() {
+    return (
+      // ...
+    );
+  }
+}
+```
+
+更多 `propType` 内容请看 => [文档](https://github.com/facebook/prop-types)
+
+#### React Docgen
+如果你的代码写的足够规范，且 prop 类型的名称和类型都很清晰，那么我们可以自动生成文档。
+
+首先安装
+```
+yarn global add react-docgen
+```
+然后我们写一个随便写一个示例组件 App.js
+```javascript
+import React from 'react';
+import PropTypes from 'prop-types';
+
+/**
+ * the app
+ */
+class App extends React.Component {
+  static propTypes = {
+    /**
+     * the props text
+     */
+    text: PropTypes.string,
+  }
+
+  /**
+   * button click
+   */
+  handleClick(p) {}
+
+  render() {
+    return (
+      <div>
+        { this.props.text }
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+之后执行命令
+```
+react-docgen App.js
+```
+然后就可以得到这样一个 JSON
+```json
+{
+  "description": "the app",
+  "displayName": "App",
+  "methods": [
+    {
+      "name": "handleClick",
+      "docblock": "button click",
+      "modifiers": [],
+      "params": [
+        {
+          "name": "p"
+        }
+      ],
+      "returns": null,
+      "description": "button click"
+    }
+  ],
+  "props": {
+    "text": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "the props text"
+    }
+  }
+}
+```
+现在可以通过返回的 JSON 创建文档了~
+
 more todo...
