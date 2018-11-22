@@ -462,7 +462,7 @@ render () {
 ```
 推荐阅读 [[译注]React最佳实践](https://fed.renren.com/2017/02/28/react-patterns/)
 
-#### React Docgen
+### React Docgen
 如果你的代码写的足够规范，且 prop 类型的名称和类型都很清晰，那么我们可以自动生成文档。
 
 首先安装
