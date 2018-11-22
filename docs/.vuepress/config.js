@@ -5,6 +5,6 @@ module.exports = {
   themeConfig: {
     sidebarDepth: 2,
     lastUpdated: "Last Updated",
-    sidebar: ['/CSS/', '/JS/', '/React/', '/探索React最佳实践/', '/Webpack/', '/Others/']
+    sidebar: ['/CSS/', '/JS/', '/React/', '/探索React最佳实践/', '/Webpack/', '/Others/', '/有趣的问题/']
   }
 };
