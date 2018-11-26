@@ -462,6 +462,78 @@ render () {
 ```
 推荐阅读 [[译注]React最佳实践](https://fed.renren.com/2017/02/28/react-patterns/)
 
+### 高阶组件封装受控组件
+当我们一个组件内含有大量受控组件时，是否要写多个 `handleChange` 来控制每个受控组件呢？最开始我用这种方式来公用 `handleChange`
+```javascript
+class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(key, val) {
+    this.setState({
+      [key]: val,
+    });
+  }
+
+  render() {
+    return (
+      <>
+        <InputItem onChange={ v => this.handleChange('user', v) }>账号</InputItem>
+        <InputItem onChange={ v => this.handleChange('pwd', v) }>密码</InputItem>
+        // ...
+      </>
+    )
+  }
+}
+```
+这样看似乎没有问题了。实际上，针对多个组件，每个组件都含有多个受控组件的情况，我们仍需要为每一个组件单独编写 `handleChange`，这种方式仍然存在代码重复的问题。
+
+针对这种情况，可以通过封装高阶组件解决代码复用问题。我们新建一个文件 `formcontrol.js`：
+```javascript
+import React from 'react';
+
+export default function FormControl(Components) {
+  return class Form extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {};
+      this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(key, val) {
+      this.setState({
+        [key]: val,
+      });
+    };
+
+    render() {
+      return <Components handleChange={ this.handleChange } state={ this.state } { ...this.props }/>;
+    }
+  };
+}
+```
+这样我们之前的代码可以修改为：
+```javascript
+import FormControl from './formcontrol';
+
+@FormControl
+class Login extends Component {
+  render() {
+    return (
+      <>
+        <InputItem onChange={ v => this.props.handleChange('user', v) }>账号</InputItem>
+        <InputItem onChange={ v => this.props.handleChange('pwd', v) }>密码</InputItem>
+        // ...
+      </>
+    )
+  }
+}
+```
+现在在 `Login` 这个组件内就有一个 `props` `state` 用来管理我们的账号和密码
+
 ### React Docgen
 如果你的代码写的足够规范，且 prop 类型的名称和类型都很清晰，那么我们可以自动生成文档。
 
