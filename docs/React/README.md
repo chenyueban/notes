@@ -85,7 +85,7 @@ handleChange(key, value) {
   })
 }
 ```
-*提倡对于所有表单元素统一使用 `state` 控制，即不提倡在 `React` 中使用非受控组件*
+*如果还是闲麻烦 可以参考我 探索React最佳实践 [高阶组件封装受控组件](https://chenyueban.github.io/notes/%E6%8E%A2%E7%B4%A2React%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/#%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6)*
 
 ### 使用 `redux-form-utils` 减少冗余
 即使我们将多个表单都公用了一个 `handleChange` 我们仍然要为每一个表单绑定 `value`，添加 `onChange`，这样写了好久之后我才终于发现一个更优雅的解决方案 `redux-form-utils`
@@ -209,103 +209,10 @@ render() {
 - 尽量避免使用index作为key
 - 尽量避免使用index作为key
 
-## 路由
-### 组件外部跳转
-```javascript
-// 这里 hashHistory 或 browserHistory 取决于路由定义时的方式
-import { hashHistory } from 'react-router'
-
-hashHistory.push("/print/printIndex/shortTitle")
-```
-或
-```javascript
-this.props.history.push('/print/printIndex/shortTitle') // react-router 2 写法
-this.context.router.history.push('/print/printIndex/shortTitle') // react-router 4 写法
-```
-
-### Link 取代 a 标签
-原写法
-```javascript
-<a className="rowElement8 label" onClick={this.toShortTitle}>管理简称</a>
-
-toShortTitle = () => {
-    hashHistory.push("/print/printIndex/shortTitle")
-}
-```
-现写法
-```javascript
-import { Link } from 'react-router'
-
-<Link to='/print/printIndex/shortTitle'>管理简称</Link>
-```
-
-## MVC MVP MVVM 思想引入
-### 统一代码风格
-- 要有一套统一的代码风格，不能每个人按照自己的心情随意编写代码，在完成需求的前提下统一风格，方便他人维护时快速读懂代码，提高效率。
-### 函数/组件封装
-- 当我们发现，代码相同的部分较多时，代码一定就可以封装成 函数/组件
-- 代码内尽量不要出现重复的代码
-### 纯函数
+## 纯函数
 [合理的使用纯函数编程](https://segmentfault.com/a/1190000007491981)
 
 推荐书籍 [JS 函数式编程指南](https://legacy.gitbook.com/book/llh911001/mostly-adequate-guide-chinese/details)
-### Redux
-#### 应用场景
-例：传参时需要传入machineNo sellerNick
-```javascript
-CommonService.getNickAndMachineNo()
-  .then(res => {
-    const machineNo = res.machineNo
-    const username = res.sellerNick
-  }
-```
-
-```javascript
-// type
-const MSG_LIST = 'MSG_LIST'
-// action creater
-function msgList(msgs, users, userid) {
-  return {
-    type: MSG_LIST,
-    payload: { msgs, users, userid }, // 规范是使用payload包裹数据
-  }
-}
-export function getMsgList() {
-  return (dispatch, getState) => {
-    axios.get(`${userUri}/msglist`)
-      .then((res) => {
-        if (res.status === 200 && res.data.code === 1) {
-          // 请求成功
-          const userid = getState().user._id
-          dispatch(msgList(res.data.msgs, res.data.users, userid))
-        }
-      });
-  };
-}
-// reducer
-const initState = {
-  chatmsg: [],
-  users: {},
-  unread: 0,
-};
-export function chat(state = initState, action) {
-  switch (action.type) {
-    case MSG_LIST:
-      return {
-        ...state,
-        chatmsg: action.payload.msgs,
-        users: action.payload.users,
-        unread: action.payload.msgs.filter(v => !v.read && v.to === action.payload.userid).length,
-      };
-    default:
-      return state;
-  }
-}
-```
-### MVC思想
-- Model 数据存取 -- redux
-- View 视图 -- render
-- Controller 控制器(数据和视图以外的逻辑全部放在这) -- 组件内操作 setState 等
 
 ## PureComponent
 > React15.3中新加了一个 `PureComponent` 类，目的是减少不必要的 `render`，从而提高性能。并且可以少写很多 `shouldComponentUpdate`
