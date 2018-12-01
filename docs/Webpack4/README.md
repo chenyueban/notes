@@ -326,27 +326,45 @@ h1 {
   display: flex;
 }
 ```
-使用下一代 CSS 语法：
-```css
-/*输入*/
-:root {
-  --red: #d33;
-}
-
-h1 {
-  color: var(--red);
-}
-
-
-/*输出*/
-h1 { 
-  color: #d33;
-}
-```
-> 目前 Chrome 等现代浏览器已经能完全支持 cssnext 中的所有语法，也就是说按照 cssnext 语法写的 CSS 在不经过转换的情况下也能在浏览器中直接运行。
 
 #### 接入 Webpack
 安装
 ```bash
-yarn add postcss-loader --dev
+yarn add postcss-loader autoprefixer --dev
+```
+新建文件 `postcss.config.js`
+```js
+const autoprefixer = require('autoprefixer');
+
+module.exports = {
+  plugins: [
+    autoprefixer({
+      browsers: [
+        'last 2 versions',
+        'Firefox ESR',
+        '> 1%',
+        'ie >= 9',
+        'iOS >= 8',
+        'Android >= 4',
+      ],
+    }),
+  ],
+};
+```
+最后在 `webpack.config.js`
+```js
+module: {
+    rules: [
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+          'postcss-loader',
+        ],
+        exclude: path.resolve(__dirname, 'node_modules'),
+      },
+    ],
+  },
 ```
