@@ -98,3 +98,30 @@ deploy:
 ```
 
 最后 push 代码到 github, travis 就会检测到 push 请求，实现自动部署到 `gh-pages` 分支
+
+##  jest codecov 集成踩坑
+
+codecov 是一个开源的统计单元测试覆盖率的工具, 可通过 `travis` 自动部署时上传覆盖率.
+
+本例结合 jest 集成 codecov
+
+首先安装 codecov
+```bash
+yarn add --dev codecov
+```
+然后 `package.json` `scripts` 加入:
+```json
+"codecov": "codecov"
+```
+最后在 `package.json` `jest` 或者 `jest.config.js` 内加入配置项:
+```
+coverageDirectory: './coverage/',
+collectCoverage: true,
+```
+注: codecov 将在根目录下生成目录 coverage, 可通过 `.gitignore` 配置忽略.
+
+本地文件的操作就这些, 之后去到 [codecov.io](https://codecov.io/), 登录后进入目标项目, 复制 `Token`
+
+然后去到 travis 对应项目 `Environment Variables` 内新添 `CODECOV_TOKEN`
+
+ok, 以后 `git push` 就会自动跑 codecov 啦~
