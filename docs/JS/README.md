@@ -459,3 +459,24 @@ class SmsIndex extends React.Component {
 export default SmsIndex;
 ```
 [修饰器用法](http://es6.ruanyifeng.com/#docs/decorator)
+
+## 标记模板字符串
+```js
+// 模板字符串
+`hello ${name}`
+
+// 标记模板字符串
+tag`hello ${name}`
+```
+标记模板字符串允许你通过向模板字符串添加自定义 `标记` 来更好地将模板文字解析为字符串。`tag` 只是一个解析器函数，它获取字符串模板解释的所有字符串和值的数组，标记函数应返回最终字符串。
+```js
+const hi = (string, ...values) => {
+  let result = '';
+  string.forEach((str, i) => {
+    result += str;
+    if (values[i]) result += `hi ${values[i]}`;
+  });
+  return result;
+};
+const strings = hi`${name}, good morning!`;
+```
