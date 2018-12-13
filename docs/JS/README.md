@@ -392,7 +392,7 @@ console.log(test()); // -> Promise {<resolved>: "1"}
 ```
 
 ## 修饰器
-### 千牛项目中配置
+### webpack 中配置
 `webpack.config.js` 加入如下配置
 ```javascript
 module: {
@@ -418,7 +418,7 @@ module: {
     ]
   },
 ```
-### 普通react项目中配置
+### babel 中配置
 安装 `babel` 插件
 ```
 npm install babel-core babel-plugin-transform-decorators
