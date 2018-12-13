@@ -125,3 +125,20 @@ collectCoverage: true,
 然后去到 travis 对应项目 `Environment Variables` 内新添 `CODECOV_TOKEN`
 
 ok, 以后 `git push` 就会自动跑 codecov 啦~
+
+## Commitizen
+能够根据提示自动生成符合规范的 `commit message`
+
+安装
+```bash
+yarn global add commitizen
+```
+
+在项目中使用
+```bash
+commitizen init cz-conventional-changelog --save --save-exact
+```
+
+在提交的时候就可以使用 `git cz` 就可以根据提示，生成自动化的 `commit message`
+
+![commit](https://user-gold-cdn.xitu.io/2018/10/27/166b47239dd94158?imageslim)
