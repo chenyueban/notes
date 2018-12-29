@@ -534,6 +534,50 @@ class Login extends Component {
 ```
 现在在 `Login` 这个组件内就有一个 `props` `state` 用来管理我们的账号和密码
 
+### render props
+我要打自己的脸了, 过去我曾经认为 HOC 天下第一, 直到接触到 `render props`
+
+以上的例子可用 `render props` 改写
+```jsx
+class InputItem extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: '',
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      value: e.target.value,
+    });
+  }
+
+  render() {
+    return this.props.children({
+      value: this.state.value,
+      onChange: this.handleChange,
+    });
+  }
+}
+
+class Login extends React.Component {
+  render() {
+    return (
+      <InputItem>
+        {form => (
+          <input value={form.value} onChange={form.onChange} placeholder="用户名" />
+        )}
+      </InputItem>
+    );
+  }
+}
+```
+真是好用到无可挑剔, 感谢 react 给我带来一个个如此灵活充满惊喜的用法.
+
 ### React Docgen
 如果你的代码写的足够规范，且 prop 类型的名称和类型都很清晰，那么我们可以自动生成文档。
 

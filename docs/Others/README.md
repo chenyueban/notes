@@ -142,3 +142,25 @@ commitizen init cz-conventional-changelog --save --save-exact
 在提交的时候就可以使用 `git cz` 就可以根据提示，生成自动化的 `commit message`
 
 ![commit](https://user-gold-cdn.xitu.io/2018/10/27/166b47239dd94158?imageslim)
+
+## 生成 Change log
+> 如果你的所有 Commit 都符合 Angular 格式，那么发布新版本时， Change log 就可以用脚本自动生成
+
+```bash
+yarn global add conventional-changelog-cli
+
+conventional-changelog -p angular -i CHANGELOG.md -s -r 0
+```
+
+> 为了方便使用，可以将其写入package.json的scripts字段。
+
+```json
+{
+  "scripts": {
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
+  }
+}
+```
+
+[参考](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
+[参考2](https://juejin.im/post/5bd2debfe51d457abc710b57)
