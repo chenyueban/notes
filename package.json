@@ -7,7 +7,7 @@
     "build": "vuepress build docs"
   },
   "repository": "https://github.com/chenyueban/front-end-notes.git",
-  "author": "chenyueban <269380014@qq.com>",
+  "author": "chenyueban <jasonchan0527@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "vuepress": "^0.14.5"
