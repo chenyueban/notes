@@ -43,4 +43,48 @@ mc.addEventListener('message', event => {
 })
 ```
 
-## Event loop
+## Event loop (事件循环)
+JS引擎是单线程的，在某一个特定的时间内只能执行一个任务，并阻塞其他任务的执行。这样的话，用户不得不等待一个耗时的操作完成之后才能进行后面的操作，但是实际开发中我们却可以使用异步代码来解决问题，那么异步代码是如何在单线程内运行的呢？
+
+当异步方法如 `setTimeout` 或 `ajax` 执行时，会交给浏览器内核的其他模块去管理。当其他模块执行完毕时将方法推入到一个任务队列(task queue)，当主线程代码执行完毕处于空闲时会检查任务队列，将任务队列中第一个任务入栈执行，执行完毕后继续检查任务队列，如此循环。
+
+看以下代码
+
+```js
+console.log('script start')
+
+setTimeout(function() {
+  console.log('setTimeout')
+}, 0)
+
+console.log('script end')
+```
+
+虽然 `setTimeout` 延时为 0，但由以上内容我们可知 `setTimeout` 还是会在 `script end` 之后打印。
+
+### 微任务(microtask) 和 宏任务(macrotask)
+在 ES6 规范中，**microtask** 称为 **jobs**，**macrotask** 称为 **task**。
+微任务(microtask):
+- process.nextTick
+- promise
+- Object.observe
+- MutationObserver
+
+宏任务(macrotask):
+- script
+- setTimeout
+- setInterval
+- setImmediate
+- I/O
+- UI rendering
+
+### Event loop 顺序
+1. 执行同步代码，这属于宏任务
+2. 执行栈为空，查询是否有微任务需要执行
+3. 执行所有微任务
+4. 必要的话渲染 UI
+5. 然后开始下一轮 Event loop，执行宏任务中的异步代码
+
+> 简单点记，微任务是早于除去 `script` 的宏任务执行的。
+> 
+> script => 微任务 => 其余宏任务
