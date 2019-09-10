@@ -1,5 +1,32 @@
 # JS
 
+## JS 数据类型
+
+分为 **原始类型** 和 **Object**。
+### 7 种原始类型
+- Boolean
+- Null
+- Undefined
+- Number
+- String
+- Symbol
+- BigInt
+### Object
+也是 **引用类型**。
+包括
+- Array
+- Function
+- RegExp
+- Date
+
+## JS 数据类型存储在什么地方
+
+原始类型即基础数据类型，往往都保存在栈内存中，由系统自动存储空间。
+
+引用类型值得大小不固定，值保存在堆内存内 同时会有一个地址指向值，这个地址保存在栈内存中。
+
+可见 [图解JavaScript深拷贝](https://zhuanlan.zhihu.com/p/37544767)
+
 ## Typeof
 `typeof` 对于基本类型，除了 `typeof` 都可以显示正确的类型
 ```javascript
